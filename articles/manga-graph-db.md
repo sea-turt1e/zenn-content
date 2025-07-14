@@ -16,7 +16,12 @@ published_at: 2025-07-14 17:00
 Manga Graphは以下の2つのリポジトリで構成されています：
 
 - **[manga-graph](https://github.com/sea-turt1e/manga-graph/tree/main)**: Neo4j、Python、FastAPIを使用したAPI形式のバックエンド
+
+https://github.com/sea-turt1e/manga-graph/tree/main
+
 - **[manga-graph-frontend](https://github.com/sea-turt1e/manga-graph-frontend)**: Vue.js + Cytoscape.jsによるグラフ可視化フロントエンド
+
+https://github.com/sea-turt1e/manga-graph-frontend
 
 実際のデモは[Manga Graph Visualizer](https://mangagraph.netlify.app/)として公開されており、インタラクティブなグラフ操作が可能です。
 またローカルで動かすこともできるので、良ければぜひ上記のGitHubリポジトリのREADMEを参照して試してみてください。
