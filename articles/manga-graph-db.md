@@ -16,7 +16,12 @@ published_at: 2025-07-14 17:00
 Manga Graphは以下の2つのリポジトリで構成されています：
 
 - **[manga-graph](https://github.com/sea-turt1e/manga-graph/tree/main)**: Neo4j、Python、FastAPIを使用したAPI形式のバックエンド
-- **[manga-graph-frontend](https://github.com/sea-turt1e/manga-graph-frontend)**: Vue.js + Cytoscape.jsによるグラフ可視化フロントエンド
+
+https://github.com/sea-turt1e/manga-graph/tree/main
+
+- **[manga-graph-frontend](https://github.com/sea-turt1e/manga-graph-frontend/tree/main)**: Vue.js + Cytoscape.jsによるグラフ可視化フロントエンド
+
+https://github.com/sea-turt1e/manga-graph-frontend/tree/main
 
 実際のデモは[Manga Graph Visualizer](https://mangagraph.netlify.app/)として公開されており、インタラクティブなグラフ操作が可能です。
 またローカルで動かすこともできるので、良ければぜひ上記のGitHubリポジトリのREADMEを参照して試してみてください。
@@ -58,7 +63,17 @@ Manga Graphは以下の2つのリポジトリで構成されています：
 雑誌📙 ←→ 出版社🏢（発行関係）
 ```
 
-Neo4jのグラフデータベースにより、これらの多対多の関係を効率的に表現・検索できます。
+Neo4jのグラフデータベースにより、これらの多対多の関係を効率的に表現・検索できます。  
+
+## 工夫点
+Manga Graph Visualizerでは**同時期**に同じ雑誌で掲載していた作品がノードとして選択されるようにしています。  
+この「**同時期**」というのは以下のようなJaccard類似度を元に計算しています。  
+
+$$ \text{類似度} = \frac{\text{重複期間}}{\text{連載期間A} + \text{連載期間B} - \text{重複期間}} $$
+
+この類似度が高い順で表示をしています。
+これによって連載期間が長い作品が常にノードとして現れるようなことがなくなり、関係性の深い作品がノードとして表示されるようになっています。
+
 
 ## 苦労した点
 ### グラフ構造の設計
