@@ -292,7 +292,7 @@ def tree_search(query: str, roots: Sequence[TreeNode], *, model: str, api_key: s
 
 ---
 
-## 4. 実行例
+## 4. 実行オプション
 最後にエントリポイントを用意して動かします。API キーが無い場合は `tree_search` 内でキーワードフォールバックのみが実行されます。
 
 ```python
@@ -326,6 +326,29 @@ def main() -> None:
 if __name__ == "__main__":
     main()
 ```
+
+## 5. 実行例
+実際にAttention Is All You Needの論文PDFを元に生成したツリー構造を使って検索を実行してみます。
+
+### 実行方法
+クエリとして「このドキュメントの結論は何ですか？」を与えた場合の実行例です。
+```bash
+python tutorials/tree-search/tree_search_example.py "What is multi-head attention?" --no-trace 
+```
+
+### 出力
+> 1. [0000] 序文 (1-1ページ, 深さ 0)
+   パス: 序文
+   理由: 結論や要約を含む可能性のある、概要や要旨が含まれているため。
+   概要: このドキュメントの一部は、シーケンス変換タスクのための新しいニューラルネットワークアーキテクチャであるTransformerを提案する論文「Attention Is All You Need」の導入と概要を紹介しています。 以前のモデルとは異なり...
+> 2. [0022] 結論 (10-10ページ, 深さ 0)
+   パス: 結論
+   理由: Transformerモデルの結論と最終評価が含まれているため。
+   概要: このドキュメントの一部は、英語の構成要素解析におけるTransformerモデルのパフォーマンス評価、特にWSJセクション23データセットについて紹介しています。 Transformerを様々な先行モデルと比較しており...
+
+:::message
+実際は英語でのクエリを与えたため、出力も英語になっています。上記は出力された英語の別アプリで翻訳した結果です。
+:::
 
 ## まとめ
 以上がPageIndexのOSS版を利用し、自作のPythonコードで検索部分を実装した例になります。
