@@ -3,7 +3,7 @@ title: "OSS版PageIndexと自作Pythonコードで「ツリー検索」を実装
 emoji: "🗂️"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: [LLM, RAG, Python, OSS, PageIndex]
-published: false
+published: true
 ---
 
 この記事では、[PageIndex](https://pageindex.ai/)をOSSとPythonで試してみた内容を書いていきます。
