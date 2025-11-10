@@ -8,6 +8,24 @@
 npx zenn new:article --slug 記事のスラッグ --title タイトル --type idea --emoji ✨
 ```
 
+
+## Zennマークダウン
+[マークダウン記法](https://zenn.dev/zenn/articles/markdown-guide)
+
+### メッセージ
+```
+:::message
+メッセージ内容
+:::
+```
+
+### 警告メッセージ
+```
+:::message alert
+警告メッセージ内容
+:::
+```
+
 ## .movを.gifに変更するコマンド
 ```bash
 # パレット画像生成
