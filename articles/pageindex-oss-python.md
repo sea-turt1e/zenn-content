@@ -40,7 +40,7 @@ source .venv/bin/activate  # zsh/macOS
 pip3 install --upgrade -r requirements.txt
 ```
 
-# OpenAI APIキーを環境変数に設定
+### OpenAI APIキーを環境変数に設定
 ```bash
 export CHATGPT_API_KEY="your_openai_api_key"
 ```
@@ -200,7 +200,7 @@ def load_structure(path: Path) -> Tuple[List[TreeNode], Dict[str, TreeNode]]:
 
 ---
 
-## 2. 候補ノードを LLM に評価させる
+### 2. 候補ノードを LLM に評価させる
 LLM に投げるプロンプトを作り、JSON 形式で返答してもらう最小例です。ここでは OpenAI のクライアントを前提としています。
 
 ```python
@@ -239,7 +239,7 @@ def ask_llm(query: str, nodes: Sequence[TreeNode], *, model: str, api_key: str) 
 
 ---
 
-## 3. 幅優先で探索しつつ LLM の指示に従う
+### 3. 幅優先で探索しつつ LLM の指示に従う
 実際の `tree_search_example.py` にあるロジックを簡略化し、LLM の指示に応じて探索を続ける部分を最小化します。失敗時にはキーワードスコアにフォールバックする単純な例です。
 
 ```python
@@ -286,7 +286,7 @@ def tree_search(query: str, roots: Sequence[TreeNode], *, model: str, api_key: s
     return selected
 ```
 
-## 4. 実行例
+### 4. 実行例
 実際にAttention Is All You Needの論文PDFを元に生成したツリー構造を使って検索を実行してみます。
 
 ### 実行方法
