@@ -1,6 +1,6 @@
 ---
-title: "PageIndexをOSSと自作Pythonコードで動かす"
-emoji: "🌲"
+title: "OSS版PageIndexと自作Pythonコードで「ツリー検索」を実装する"
+emoji: "🗂️"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: [LLM, RAG, Python, OSS, PageIndex]
 published: false
@@ -8,23 +8,23 @@ published: false
 
 この記事では、[PageIndex](https://pageindex.ai/)をOSSとPythonで試してみた内容を書いていきます。
 
-## PageIndexとは
+# PageIndexとは
 [PageIndex](https://pageindex.ai/)は、章立てになっているPDFやMarkdownなどの文書をJSON形式のツリー構造に変換し、そのJSONをもとに情報の検索を行う手法です。
 概念としての詳細は[「ベクトルDB不要」なRAG手法「PageIndex」を解説](https://zenn.dev/knowledgesense/articles/2895f9adc8d802)の記事がわかりやすいと思います。
 
 この記事では、実装にフォーカスした、OSSとして公開されているPageIndexと独自のPythonコードを組み合わせた内容を書いていきます。
 
 :::message
-PageIndexでは有料のクラウド版とOSS版があります。
-OSS版ではツリー構造にするまでのコードが公開されていますが、検索部分は含まれていませんので実装は自分で行う必要があります。
+PageIndexではAPI版とOSS版があります。
+OSS版では2025/11/10時点で、ツリー構造にするまでのコードは公開されていますが、検索部分は含まれていませんので実装は自分で行う必要があります。
 今回の記事ではOSS版でツリー構造を作成し、自作のPythonコードで検索部分を実装しています。
 :::
 
-## 実装コード
-実装コードは以下のGitHubリポジトリに公開しています。
+# 実装コード
+実装に関しては「ツリー構造の出力方法」と「検索部分の実装」に分けて説明します。
 
-## 木構造の出力方法
-- [PageIndex OSSリポジトリ](https://github.com/VectifyAI/PageIndex/tree/main/tutorials/tree-search)にある通りの手順で木構造を出力します。
+## ツリー構造の出力方法
+- [PageIndex OSSリポジトリ](https://github.com/VectifyAI/PageIndex/tree/main?tab=readme-ov-file#-package-usage)にある通りの手順でPDFからツリー構造を出力します。
 
 ### Python環境のセットアップ
 ```bash
@@ -33,6 +33,8 @@ git clone git@github.com:VectifyAI/PageIndex.git
 cd PageIndex
 
 # 仮想環境を作成・有効化（自分の環境に合わせてください）
+python3 -m venv .venv
+source .venv/bin/activate  # zsh/macOS
 
 # 依存パッケージをインストール
 pip3 install --upgrade -r requirements.txt
@@ -40,22 +42,22 @@ pip3 install --upgrade -r requirements.txt
 
 # OpenAI APIキーを環境変数に設定
 ```bash
-touch .env
-echo "CHATGPT_API_KEY=your_openai_key_here">> .env
+export CHATGPT_API_KEY="your_openai_api_key"
 ```
 
 ### サンプルドキュメントの配置
 ルートディレクトリに実際に検索したいPDFドキュメントを配置します。
 （今回はサンプルとして[Attention Is All You Need](https://arxiv.org/pdf/1706.03762)を使用します。）
 
-### 木構造の出力
+### ツリー構造の出力
 ```bash
-python3 run_pageindex.py --pdf_path /path/to/your/document.pdf --model gpt-4.1-mini-2025-04-14
+python3 run_pageindex.py --pdf_path /path/to/your/pdf_of_attention_is_all_you_need.pdf --model gpt-4.1-mini-2025-04-14
 ```
 :::message
 modelオプションは使用する言語モデルに応じて変更してください。
 現在はOpenAIのGPTのみ対応している模様です。
 ちなみにgpt-5はまだ対応していないなど、モデルのバージョンによってはエラーになる場合があります。
+デフォルトではgpt-4o-2024-11-20が使用されます。
 :::
 
 :::message alert
@@ -64,7 +66,7 @@ modelオプションは使用する言語モデルに応じて変更してくだ
 
 ### 出力結果
 実際の出力結果の**抜粋**です。
-JSON形式でツリー構造が出力されます。
+JSON形式でツリー構造が出力されます。ちゃんと章立ての構成をJSONで表現できていることがわかります。
 
 ```json
 {
@@ -128,21 +130,21 @@ JSON形式でツリー構造が出力されます。
 
 ## 検索部分の実装
 ここからはOSS版のGitHubリポジトリに実装は載せられていないため、自分で実装した検索部分のコードを紹介します。
-ただし、[こちら](https://github.com/VectifyAI/PageIndex/tree/main/tutorials/tree-search)にツリー構造からの検索の考え方は載せられていますので、そちらも参考にしてください。
+ただし元のOSS版リポジトリの[こちら](https://github.com/VectifyAI/PageIndex/tree/main/tutorials/tree-search)にツリー構造からの検索の考え方は載せられていますので、そちらも参考にしてください。
 
-TODO: リポジトリURL差し替え
 :::message
-以下のコードはこの記事ように簡略化したコードです。
-実際のコードは[こちらのリポジトリ](https://github.com/VectifyAI/PageIndex/tree/main/tutorials/tree-search)をご覧ください。 
+この記事中のコードは簡略化したものです。
+実際の全体のコードは以下をご覧ください。 
+実行方法やコードの詳細説明: [tree_search_example_usage.md](https://github.com/sea-turt1e/PageIndex/blob/main/tutorials/tree-search/tree_search_example_usage.md)
+実装コード: [tree_search_example.py](https://github.com/sea-turt1e/PageIndex/blob/main/tutorials/tree-search/tree_search_example.py)
 :::
-https://github.com/VectifyAI/PageIndex/tree/main/tutorials/tree-search
 
 
 ### 実装の流れ
 1. ツリー構造をJSONからPythonのクラスにマッピングする
 2. LLMに評価させる関数を作成する
 3. 幅優先探索しつつLLMの指示に従う
-4. エントリポイントを作成して実行する
+4. クエリを与えて実行する
 
 ### 1. ツリー構造をJSONからPythonのクラスにマッピングする
 まずは最小限の `TreeNode` クラスと、JSON からツリーを読み込む関数を定義します。パス情報とサマリーを持たせると、後続の表示が分かりやすくなります。
@@ -269,14 +271,8 @@ def tree_search(query: str, roots: Sequence[TreeNode], *, model: str, api_key: s
         if not batch:
             break
 
-        try:
-            decision = ask_llm(query, batch, model=model, api_key=api_key)
-        except Exception:
-            # LLM が落ちたら簡易的にキーワードスコアでフォールバック
-            batch.sort(key=lambda n: keyword_score(query, n), reverse=True)
-            selected.extend(batch[:2])
-            continue
-
+        decision = ask_llm(query, batch, model=model, api_key=api_key)
+        
         for item in decision.get("relevant_nodes", []):
             node = next((n for n in batch if n.node_id == item.get("node_id")), None)
             if node and node not in selected:
@@ -290,50 +286,13 @@ def tree_search(query: str, roots: Sequence[TreeNode], *, model: str, api_key: s
     return selected
 ```
 
----
-
-## 4. 実行オプション
-最後にエントリポイントを用意して動かします。API キーが無い場合は `tree_search` 内でキーワードフォールバックのみが実行されます。
-
-```python
-import argparse
-
-def main() -> None:
-    parser = argparse.ArgumentParser()
-    parser.add_argument("query")
-    parser.add_argument("--structure", default="toy_structure.json")
-    parser.add_argument("--model", default="gpt-4.1-nano-2025-04-14")
-    parser.add_argument("--api-key")
-    args = parser.parse_args()
-
-    roots, _ = load_structure(Path(args.structure))
-    selections = tree_search(
-        args.query,
-        roots,
-        model=args.model,
-        api_key=args.api_key or "",
-    )
-
-    if not selections:
-        print("No nodes selected.")
-        return
-
-    print("Selected nodes:")
-    for node in selections:
-        print(f"- {node.pretty_path()}: {node.short_summary()}")
-
-
-if __name__ == "__main__":
-    main()
-```
-
-## 5. 実行例
+## 4. 実行例
 実際にAttention Is All You Needの論文PDFを元に生成したツリー構造を使って検索を実行してみます。
 
 ### 実行方法
-クエリとして「このドキュメントの結論は何ですか？」を与えた場合の実行例です。
+クエリとして「このドキュメントの主要な結論は何ですか？」を与えた場合の実行例です。
 ```bash
-python tutorials/tree-search/tree_search_example.py "What is multi-head attention?" --no-trace 
+python tutorials/tree-search/tree_search_example.py "What is the main conclusion in this document?" --no-trace 
 ```
 
 ### 出力
@@ -347,10 +306,10 @@ python tutorials/tree-search/tree_search_example.py "What is multi-head attentio
    概要: このドキュメントの一部は、英語の構成要素解析におけるTransformerモデルのパフォーマンス評価、特にWSJセクション23データセットについて紹介しています。 Transformerを様々な先行モデルと比較しており...
 
 :::message
-実際は英語でのクエリを与えたため、出力も英語になっています。上記は出力された英語の別アプリで翻訳した結果です。
+実際は英語でのクエリを与えたため、出力も英語になっています。上記は英語での出力結果を別アプリで翻訳した文です。
 :::
 
 ## まとめ
 以上がPageIndexのOSS版を利用し、自作のPythonコードで検索部分を実装した例になります。
-PageIndex自体はまだ新しい技術であり、OSS版も発展途上な部分が多いですが、ツリー構造を利用した検索手法としては面白い方法論だと思います。
+PageIndex自体はまだまだ新しい概念/技術であり、OSS版も発展途上な部分が多いですが、ツリー構造を利用した検索手法として面白い方法だと思います。
 ある程度章立てになっているなど、使える場面やドメインは限られるかもしれませんが、よかったら試してみてください。
