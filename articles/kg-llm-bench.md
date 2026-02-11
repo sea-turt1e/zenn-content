@@ -1,8 +1,8 @@
 ---
-title: "ナレッジグラフのテキスト化、モデルで変えるべき"
+title: "ナレッジグラフのテキスト化、モデルによって変えるべき"
 emoji: "✨"
 type: "tech" # tech: 技術記事 / idea: アイデア
-topics: [scholar, LLM, NLP, KnowledgeGraph, Bench]
+topics: [LLM, knowledgegraph, NLP, benchmark, Graph]
 published: true
 published_at: "2026-02-12 07:10"
 ---
