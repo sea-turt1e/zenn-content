@@ -13,29 +13,29 @@ published_at: "2026-02-12 07:10"
 
 # ざっくり要約
 - GraphRAGなど、ナレッジグラフ（KG）のデータをLLMに入力する時には基本的に**テキストに変換（テキスト化）** して入力する必要がある
-- その方法には「エッジをリスト化して渡す」「JSON構造で渡す」「YAMLで渡す」「RDF Turtleで渡す」「JSON-LDで渡す」など様々な入力方法がある
+- その方法には「エッジをリストにして渡す」「JSON構造で渡す」「YAMLで渡す」「RDF Turtleで渡す」「JSON-LDで渡す」など様々な入力方法がある
 - **テキスト化の方法を変えるだけで、ベンチマーク全体の精度が最大17.5%も変わる**
-- リスト化して渡すのが一般的ではあったが、実はLLMのモデルによって、リスト化して渡す方が良い時もあれば、JSONやYAMLで渡す方がいい時もある
+- リストにして渡すのが一般的ではあったが、実はLLMのモデルによって、リストにして渡す方が良い時もあれば、JSONやYAMLで渡す方がいい時もある
 - そのため**汎用的なベストプラクティスはなく、モデルとタスクに応じて最適な形式を選ぶ必要がある**
 
 # そもそもナレッジグラフのテキスト化とは？
 
-ナレッジグラフ（KG）は`(主語, 関係, 目的語)` のトリプル（三つ組）でデータを表現するグラフ構造のデータベースです。
+ナレッジグラフ（KG）は`[主語, 関係, 目的語]` のトリプル（三つ組）でデータを表現するグラフ構造のデータベースです。
 
 例えば、映画『インセプション』に関する知識は以下のように表せます：
 ```
-(Inception, director, Christopher Nolan)
-(Inception, genre, Science Fiction)
+[Inception, director, Christopher Nolan]
+[Inception, genre, Science Fiction]
 ```
 
 LLMはテキストを入力として受け取るため、このグラフ構造を何らかのテキスト形式に変換する必要があります。この論文では以下の **5つのテキスト化戦略** を比較しています：
 
 ### 1. List of Edges（エッジのリスト）
-最もシンプルで一般的な形式。各行に`(主語, 関係, 目的語)`を列挙します。
+最もシンプルで一般的な形式。各行に`[主語, 関係, 目的語]`を列挙します。
 ```
-(France, borders, Germany)
-(France, borders, Spain)
-(Germany, capital, Berlin)
+[France, borders, Germany]
+[France, borders, Spain]
+[Germany, capital, Berlin]
 ```
 
 ### 2. Structured JSON（構造化JSON）
