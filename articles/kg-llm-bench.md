@@ -1,5 +1,5 @@
 ---
-title: "ナレッジグラフをLLMへ応用する時はLLMによってやり方を変えた方が良いらしい"
+title: "ナレッジグラフのテキスト化、モデルで変えるべき"
 emoji: "✨"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: [scholar, LLM, NLP, KnowledgeGraph, Bench]
